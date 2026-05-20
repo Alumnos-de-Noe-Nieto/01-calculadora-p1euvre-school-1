@@ -30,4 +30,14 @@ def validar_simbolos(cadena: str) -> bool:
         >>> validar_simbolos("  XIV  ")
         True
     """
-    raise NotImplementedError()
+    cadena_limpia = cadena.strip()
+
+    if cadena_limpia == "":
+        return False
+    simbolos_validos = {"I", "V", "X", "L", "C", "D", "M"}
+    """for caracter in cadena_limpia:
+        if caracter not in simbolos_validos:
+            return False
+    return True"""
+    return all(caracter in simbolos_validos for caracter in cadena_limpia)
+

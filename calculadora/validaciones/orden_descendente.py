@@ -8,40 +8,37 @@ Ejemplos inválidos: IVX, IIV, VIV
 """
 
 def validar_orden_descendente(cadena: str) -> bool:
-    """
-    Valida que los símbolos estén en orden descendente de valor (izquierda a derecha).
+    valores =  {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    restas_validas = {"IV", "IX", "XL", "XC", "CD", "CM"}
 
-    Nivel 4: Análisis Sintáctico - Orden descendente
+    cadena_limpia = cadena.strip()
 
-    💡 PISTA: Usa la constante VALORES con el valor numérico de cada símbolo
-    💡 PISTA: Usa la constante SUSTRACCIONES_VALIDAS = {'IV', 'IX', 'XL', 'XC', 'CD', 'CM'}
-    💡 PISTA: Recorre la cadena con un índice `i` usando un while loop
-    💡 PISTA: Si cadena[i:i+2] está en SUSTRACCIONES_VALIDAS:
-    💡 PISTA:   - Verifica que no haya repeticiones antes (ej: IIV es inválido, cadena[i-1] == cadena[i])
-    💡 PISTA:   - Verifica que el símbolo anterior sea mayor al valor sustraído
-    💡 PISTA:   - Verifica que después de la sustracción, el orden descendente continúe
-    💡 PISTA: Si no es sustracción, verifica VALORES[cadena[i]] >= VALORES[cadena[i+1]]
-    💡 PISTA: Ejemplo: "XVI" → X(10) >= V(5) >= I(1) → True
-    💡 PISTA: Ejemplo: "IVX" → I(1) < V(5), pero luego V(5) < X(10) → False
-    💡 PISTA: Ejemplo: "IIV" → I repetido antes de IV → False
-    💡 PISTA: Ejemplo: "MCMXCIV" → varias sustracciones válidas → True
+    if not cadena_limpia:
+        return False
+    i = 0
+    ultimo_valor = float('inf')
 
-    Args:
-        cadena (str): La cadena de números romanos validada en Niveles 1-3
-
-    Returns:
-        bool: True si el orden es correcto, False en caso contrario
-
-    Examples:
-        >>> validar_orden_descendente("XVI")
-        True
-        >>> validar_orden_descendente("IVX")
-        False
-        >>> validar_orden_descendente("MCMXCIV")
-        True
-        >>> validar_orden_descendente("IIV")
-        False
-        >>> validar_orden_descendente("VIV")
-        False
-    """
-    raise NotImplementedError()
+    while i < len(cadena_limpia):
+        if i < len(cadena_limpia) - 1:
+            actual = cadena_limpia[i]
+            siguiente = cadena_limpia[i + 1]
+            valor_actual = valores[actual]
+            valor_siguiente = valores[siguiente]
+            if valor_actual < valor_siguiente:
+                par = actual + siguiente
+                if par not in restas_validas:
+                    return False
+                if i > 0 and cadena_limpia[i - 1] == actual:
+                    return False
+                valor_par = valor_siguiente - valor_actual
+                if valor_par > ultimo_valor:
+                    return False
+                ultimo_valor = valor_par
+                i += 2
+                continue
+        valor_actual = valores[cadena_limpia[i]]
+        if valor_actual > ultimo_valor:
+            return False
+        ultimo_valor = valor_actual
+        i += 1
+    return True

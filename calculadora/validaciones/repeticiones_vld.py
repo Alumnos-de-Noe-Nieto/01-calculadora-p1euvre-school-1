@@ -34,4 +34,11 @@ def validar_repeticiones_vld(cadena: str) -> bool:
         >>> validar_repeticiones_vld("DD")
         False
     """
-    raise NotImplementedError()
+    cadena_limpia = cadena.strip()
+
+    if not cadena_limpia:
+        return False
+    for i in range(1, len(cadena_limpia)):
+        if cadena_limpia[i] in "VLD" and cadena_limpia[i] == cadena_limpia[i-1]:
+            return False
+    return True
